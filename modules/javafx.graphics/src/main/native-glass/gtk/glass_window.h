@@ -33,6 +33,7 @@
 #include <vector>
 
 #include "glass_view.h"
+#include "glass_general.h"
 
 enum WindowFrameType {
     TITLED,
@@ -150,6 +151,9 @@ public:
     virtual void process_mouse_motion(GdkEventMotion*) = 0;
     virtual void process_mouse_scroll(GdkEventScroll*) = 0;
     virtual void process_mouse_cross(GdkEventCrossing*) = 0;
+#ifdef GLASS_GTK3
+    virtual void process_touch(GdkEventTouch*) = 0;
+#endif
     virtual void process_key(GdkEventKey*) = 0;
     virtual void process_state(GdkEventWindowState*) = 0;
 
@@ -251,6 +255,9 @@ public:
     void process_mouse_motion(GdkEventMotion*);
     void process_mouse_scroll(GdkEventScroll*);
     void process_mouse_cross(GdkEventCrossing*);
+#ifdef GLASS_GTK3
+    void process_touch(GdkEventTouch*);
+#endif
     void process_key(GdkEventKey*);
     void process_state(GdkEventWindowState*);
 
@@ -321,6 +328,9 @@ class WindowContextChild: public WindowContextBase {
     GlassView* view; // not null while in Full Screen
 public:
     void process_mouse_button(GdkEventButton*);
+#ifdef GLASS_GTK3
+    void process_touch(GdkEventTouch*);
+#endif
     bool set_view(jobject);
     void set_bounds(int, int, bool, bool, int, int, int, int);
     //WindowFrameExtents get_frame_extents() { return WindowFrameExtents{0, 0, 0, 0}; };

@@ -35,6 +35,7 @@
 #include <com_sun_glass_events_MouseEvent.h>
 #include <com_sun_glass_events_ViewEvent.h>
 #include <com_sun_glass_events_KeyEvent.h>
+#include <com_sun_glass_events_TouchEvent.h>
 #include <jni.h>
 
 #include "glass_general.h"
@@ -475,6 +476,14 @@ static void process_events(GdkEvent* event, gpointer data)
                     ctx->process_state(&event->window_state);
                     gtk_main_do_event(event);
                     break;
+#ifdef GLASS_GTK3
+                case GDK_TOUCH_BEGIN:
+                case GDK_TOUCH_UPDATE:
+                case GDK_TOUCH_END:
+                case GDK_TOUCH_CANCEL:
+                    ctx->process_touch(&event->touch);
+                    break;
+#endif
                 case GDK_BUTTON_PRESS:
                 case GDK_BUTTON_RELEASE:
                     ctx->process_mouse_button(&event->button);

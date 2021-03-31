@@ -25,6 +25,7 @@
 package com.sun.glass.ui;
 
 import com.sun.glass.events.MouseEvent;
+import com.sun.glass.events.TouchEvent;
 import com.sun.glass.events.ViewEvent;
 
 import java.lang.annotation.Native;
@@ -954,7 +955,7 @@ public abstract class View {
     }
 
     // ------------- END OF MOUSE EVENTS -----------------
-
+    
     protected void notifyScroll(int x, int y, int xAbs, int yAbs,
             double deltaX, double deltaY, int modifiers, int lines, int chars,
             int defaultLines, int defaultChars,
@@ -1043,20 +1044,26 @@ public abstract class View {
         dropTargetAssistant.close();
         return performedAction;
     }
-
+    
+    //TODO - Tor: Implement the list of touch methods here for use on PinePhone
     public void notifyBeginTouchEvent(int modifiers, boolean isDirect,
                                       int touchEventCount) {
+        System.out.println("[TI] - Begin Touch received");
+        System.out.printf("modifiers: %d, touchEventCount: %d", modifiers, touchEventCount);
         handleBeginTouchEvent(this, System.nanoTime(), modifiers, isDirect,
                               touchEventCount);
     }
 
     public void notifyNextTouchEvent(int type, long touchId, int x, int y,
                                      int xAbs, int yAbs) {
+        System.out.println("[TI] - Next Touch received: ");
+        System.out.printf("type: %d, touchId: %d, x: %d, y: %d, xAbs: %d, yAbs: %d", type, touchId, x, y, xAbs, yAbs);
         handleNextTouchEvent(this, System.nanoTime(), type, touchId, x, y, xAbs,
                              yAbs);
     }
 
     public void notifyEndTouchEvent() {
+        System.out.println("[TI] - END Touch received");
         handleEndTouchEvent(this, System.nanoTime());
     }
 

@@ -149,6 +149,11 @@ private:
 
     extern jmethodID jViewNotifyResize; // com.sun.glass.ui.View#notifyResize (II)V
     extern jmethodID jViewNotifyMouse; // com.sun.glass.ui.View#notifyMouse (IIIIIIIZZ)V
+
+    extern jmethodID jViewNotifyBeginTouchEvent; // com.sun.glass.ui.View#notifyBeginTouchEvent (IZI)V
+    extern jmethodID jViewNotifyNextTouchEvent; // com.sun.glass.ui.View#notifyNextTouchEvent (IJIIII)V
+    extern jmethodID jViewNotifyEndTouchEvent; // com.sun.glass.ui.View#notifyEndTouchEvent ()V
+
     extern jmethodID jViewNotifyRepaint; // com.sun.glass.ui.View#notifyRepaint (IIII)V
     extern jmethodID jViewNotifyKey; // com.sun.glass.ui.View#notifyKey (II[CI)V
     extern jmethodID jViewNotifyView; //com.sun.glass.ui.View#notifyView (I)V

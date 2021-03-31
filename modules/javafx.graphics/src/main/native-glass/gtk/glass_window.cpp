@@ -32,6 +32,7 @@
 #include <com_sun_glass_events_ViewEvent.h>
 #include <com_sun_glass_events_MouseEvent.h>
 #include <com_sun_glass_events_KeyEvent.h>
+#include <com_sun_glass_events_TouchEvent.h>
 
 #include <com_sun_glass_ui_Window_Level.h>
 
@@ -240,6 +241,39 @@ void WindowContextBase::process_expose(GdkEventExpose* event) {
         CHECK_JNI_EXCEPTION(mainEnv)
     }
 }
+
+
+   // extern jmethodID jViewNotifyBeginTouchEvent; // com.sun.glass.ui.View#notifyBeginTouchEvent (IZI)V
+   // extern jmethodID jViewNotifyNextTouchEvent; // com.sun.glass.ui.View#notifyNextTouchEvent (IJIIII)V
+   // extern jmethodID jViewNotifyEndTouchEvent; // com.sun.glass.ui.View#notifyEndTouchEvent ()V
+
+//TODO - Tor: Finish implementing touch events
+#ifdef GLASS_GTK3
+void WindowContextBase::process_touch(GdkEventTouch* event) {
+    if (jview) {
+        if(event->type == GDK_TOUCH_BEGIN) {
+            mainEnv->CallVoidMethod(jview, jViewNotifyBeginTouchEvent,
+                gdk_modifier_mask_to_glass(event->state), event->send_event, (jint) 1
+                );
+            CHECK_JNI_EXCEPTION(mainEnv)
+        }
+        if(event->type == GDK_TOUCH_UPDATE) {
+            mainEnv->CallVoidMethod(jview, jViewNotifyNextTouchEvent,
+                com_sun_glass_events_TouchEvent_TOUCH_MOVED, event->sequence,
+                (jint) event->x, (jint) event->y,
+                (jint) event->x_root, (jint) event->y_root
+                );
+            CHECK_JNI_EXCEPTION(mainEnv)
+        }
+        if(event->type == GDK_TOUCH_END || event->type == GDK_TOUCH_CANCEL) {
+            mainEnv->CallVoidMethod(jview, jViewNotifyEndTouchEvent);
+            CHECK_JNI_EXCEPTION(mainEnv)
+        }
+
+    }
+}
+#endif
+
 
 static inline jint gtk_button_number_to_mouse_button(guint button) {
     switch (button) {
@@ -1679,6 +1713,13 @@ void WindowContextChild::process_mouse_button(GdkEventButton* event) {
    // gtk_window_set_focus (GTK_WINDOW (gtk_widget_get_ancestor(gtk_widget, GTK_TYPE_WINDOW)), NULL);
     gtk_widget_grab_focus(gtk_widget);
 }
+
+#ifdef GLASS_GTK3
+void WindowContextChild::process_touch(GdkEventTouch* event){
+    WindowContextBase::process_touch(event);
+    gtk_widget_grab_focus(gtk_widget);
+}
+#endif
 
 static gboolean child_focus_callback(GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
