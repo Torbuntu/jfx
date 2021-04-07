@@ -248,6 +248,17 @@ void WindowContextBase::process_expose(GdkEventExpose* event) {
    // extern jmethodID jViewNotifyEndTouchEvent; // com.sun.glass.ui.View#notifyEndTouchEvent ()V
 
 //TODO - Tor: Finish implementing touch events
+/*
+    - Need to try and map GDK_TOUCH_:[BEGIN|UPDATE|END|CANCEL] -> TOUCH_:[PRESSED|MOVED|RELEASED|STILL]
+    which means I need to take all of the GDK_TOUCH_UPDATE events and collect them prior to calling
+    the jViewNotifyBeginTouchEvent method. This way I can pass a proper touchCount.
+
+    - Start the count when a GDK_TOUCH_BEGIN is received, and don't begin the NextTouchEvent until
+    after the END/CANCEL is sent. If CANCEL, just end, if END send the whole collection of events.
+
+
+
+*/
 #ifdef GLASS_GTK3
 void WindowContextBase::process_touch(GdkEventTouch* event) {
     if (jview) {
