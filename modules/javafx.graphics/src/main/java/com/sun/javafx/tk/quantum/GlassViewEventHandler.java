@@ -1238,6 +1238,7 @@ class GlassViewEventHandler extends View.EventHandler {
             View view, final long time, final int modifiers,
             final boolean isDirect, final int touchEventCount)
     {
+        System.out.println("[TI] - Begin touch handler");
         if (PULSE_LOGGING_ENABLED) {
             PulseLogger.newInput("BEGIN_TOUCH_EVENT");
         }
@@ -1275,6 +1276,7 @@ class GlassViewEventHandler extends View.EventHandler {
             View view, final long time, final int type, final long touchId,
             final int x, final int y, final int xAbs, final int yAbs)
     {
+        System.out.println("[TI] - Next touch handler");
         if (PULSE_LOGGING_ENABLED) {
             PulseLogger.newInput("NEXT_TOUCH_EVENT");
         }
@@ -1342,6 +1344,7 @@ class GlassViewEventHandler extends View.EventHandler {
     }
 
     @Override public void handleEndTouchEvent(View view, long time) {
+        System.out.println("[TI] - End touch handler");
         if (PULSE_LOGGING_ENABLED) {
             PulseLogger.newInput("END_TOUCH_EVENT");
         }

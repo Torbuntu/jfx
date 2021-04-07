@@ -253,13 +253,13 @@ void WindowContextBase::process_touch(GdkEventTouch* event) {
     if (jview) {
         if(event->type == GDK_TOUCH_BEGIN) {
             mainEnv->CallVoidMethod(jview, jViewNotifyBeginTouchEvent,
-                gdk_modifier_mask_to_glass(event->state), event->send_event, (jint) 1
+                gdk_modifier_mask_to_glass(event->state), event->send_event, (jint) 2
                 );
             CHECK_JNI_EXCEPTION(mainEnv)
         }
         if(event->type == GDK_TOUCH_UPDATE) {
             mainEnv->CallVoidMethod(jview, jViewNotifyNextTouchEvent,
-                com_sun_glass_events_TouchEvent_TOUCH_MOVED, event->sequence,
+                com_sun_glass_events_TouchEvent_TOUCH_PRESSED, event->sequence,
                 (jint) event->x, (jint) event->y,
                 (jint) event->x_root, (jint) event->y_root
                 );
